@@ -8,6 +8,8 @@ from llm import get_plugins
 from llm import hookimpl
 from llm import user_dir
 
+LLM_GITHUB_URL = "git+https://github.com/c0ffee0wl/llm"
+
 
 def get_installed_uv_tool_packages():
     path = user_dir() / "uv-tool-packages.json"
@@ -59,7 +61,7 @@ def register_commands(cli):
         help="Disable the cache",
     )
     def install(packages, upgrade, editable, force_reinstall, no_cache_dir):
-        args = ["uv", "tool", "install", "--force", "llm"]
+        args = ["uv", "tool", "install", "--force", LLM_GITHUB_URL]
         if upgrade:
             args.extend(["--upgrade"])
         if editable:
@@ -96,7 +98,7 @@ def register_commands(cli):
                 click.echo("Aborted!")
                 return
 
-        args: list[str] = ["uv", "tool", "install", "--force", "llm"]
+        args: list[str] = ["uv", "tool", "install", "--force", LLM_GITHUB_URL]
         for package in installed_packages - set(packages):
             args.extend(["--with", package])
 
